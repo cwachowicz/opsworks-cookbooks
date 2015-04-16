@@ -14,9 +14,8 @@ http {
 
   log_format upstream '$remote_addr - - [$time_local] "$request" $status ' 'upstream $upstream_response_time request $request_time ' '[for $host via $upstream_addr]';
 
-  access_log	<%= node[:nginx][:log_dir] %>/access.log;
+  access_log  <%= node[:nginx][:log_dir] %>/access.log;
   access_log  <%= node[:nginx][:log_dir] %>/upstream.log upstream;
-  error_log   <%= node[:nginx][:log_dir] %>/error.log;
 
   sendfile on;
   tcp_nopush on;
