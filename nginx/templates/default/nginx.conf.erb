@@ -12,9 +12,7 @@ http {
   include       <%= node[:nginx][:dir] %>/mime.types;
   default_type  application/octet-stream;
 
-  <% node[:nginx][:log_format].each do |name, format| %>
-  log_format <%= name %> <%= format %>;
-  <% end %>
+  log_format upstream '$remote_addr - - [$time_local] "$request" $status ' 'upstream $upstream_response_time request $request_time ' '[for $host via $upstream_addr]';
 
   access_log	<%= node[:nginx][:log_dir] %>/access.log;
   access_log  <%= node[:nginx][:log_dir] %>/upstream.log upstream;
