@@ -1,0 +1,213 @@
+upstream localz-platform {
+  server dev-playjava-localz.herokuapp.com:443;
+}
+
+upstream spotz-dev-platform {
+  server dev-spotz-api.herokuapp.com:443;
+}
+
+upstream spotz-dev2-platform {
+  server dev2-spotz-api-localz.herokuapp.com:443;
+}
+
+upstream spotz-prod-platform {
+  server prod-spotz-api.herokuapp.com:443;
+}
+
+upstream pimp-nz-dev-platform {
+  server dev-nz-pimp-api-localz.herokuapp.com:443;
+}
+
+upstream pimp-nz-prod-platform {
+  server nz-pimp-api-localz.herokuapp.com:443;
+}
+
+upstream pimp-jl-prod-platform {
+  server jl-pimp-api-localz.herokuapp.com:443;
+}
+
+upstream pimp-jl-dev-platform {
+  server dev-jl-pimp-api-localz.herokuapp.com:443;
+}
+
+upstream pimp-dev-platform {
+	server dev-pimp-api-localz-co.herokuapp.com:443;
+}
+
+upstream pimp-prod-platform {
+  server pimp-api-localz-co.herokuapp.com:443;
+}
+
+upstream dev-homepass-platform {
+  server dev-api-homepass-com.herokuapp.com:443;
+}
+
+upstream prod-homepass-platform {
+  server dev-api-homepass-com.herokuapp.com:443;
+}
+
+upstream pilot-homepass-platform {
+  server pilot-api-homepass-com.herokuapp.com:443;
+}
+
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server ipv6only=on;
+
+  root /usr/share/nginx/html;
+  index index.html index.htm;
+
+  location / {
+    # First attempt to serve request as file, then
+    # as directory, then fall back to displaying a 404.
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    } 
+    
+    try_files $uri $uri/ /index.html;
+  }
+
+  location /spotz {
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    } 
+    rewrite  ^/spotz/(.*)  /$1 break;
+    proxy_pass    https://spotz-prod-platform;
+    proxy_ssl_session_reuse off;
+    proxy_set_header  Host    prod-spotz-api.herokuapp.com;
+    proxy_set_header  X-Real-IP     $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+
+  location /spotz-dev {
+    if ($http_x_forwarded_proto != 'https') {
+    rewrite ^ https://$host$request_uri? permanent;
+    } 
+      rewrite  ^/spotz-dev/(.*)  /$1 break;
+    proxy_pass    https://spotz-dev-platform;
+    proxy_ssl_session_reuse off;
+    proxy_set_header  Host    dev-spotz-api.herokuapp.com;
+    proxy_set_header  X-Real-IP     $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+
+  location /spotz-dev2 {
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    }   
+    rewrite  ^/spotz-dev2/(.*)  /$1 break;
+    proxy_pass    https://spotz-dev2-platform;
+    proxy_ssl_session_reuse off;
+    proxy_set_header  Host    dev2-spotz-api-localz.herokuapp.com;
+    proxy_set_header  X-Real-IP     $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+
+  location /platform/v1 {
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    }   
+    rewrite  ^/platform/v1/(.*)  /$1 break;
+    proxy_pass	https://localz-platform;
+    proxy_ssl_session_reuse off;
+    proxy_set_header	Host	dev-playjava-localz.herokuapp.com;
+    proxy_set_header	X-Real-IP	$remote_addr;
+    proxy_set_header	X-Forwarded-For	$proxy_add_x_forwarded_for;
+  }
+
+  location /pimp-dev/v1 {
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    }   
+    rewrite  ^/pimp-dev/v1/(.*)  /$1 break;
+    proxy_pass	https://pimp-dev-platform;
+    proxy_ssl_session_reuse off;
+    proxy_set_header	Host	dev-pimp-api-localz-co.herokuapp.com;
+    proxy_set_header	X-Real-IP	$remote_addr;
+    proxy_set_header	X-Forwarded-For	$proxy_add_x_forwarded_for;
+  }
+
+  location /pimp/v1 {
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    }   
+    rewrite  ^/pimp/v1/(.*)  /$1 break;
+    proxy_pass    https://pimp-prod-platform;
+    proxy_ssl_session_reuse off;
+    proxy_set_header  Host    pimp-api-localz-co.herokuapp.com;
+    proxy_set_header  X-Real-IP     $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+
+  location /pimp-nz-dev/v1 {
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    }   
+    rewrite  ^/pimp-nz-dev/v1/(.*)  /$1 break;
+    proxy_pass    https://pimp-nz-dev-platform;
+    proxy_ssl_session_reuse off;
+    proxy_set_header  Host    dev-nz-pimp-api-localz.herokuapp.com;
+    proxy_set_header  X-Real-IP     $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+
+  location /pimp-nz/v1 {
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    }   
+    rewrite  ^/pimp-nz/v1/(.*)  /$1 break;
+    proxy_pass    https://pimp-nz-prod-platform;
+    proxy_ssl_session_reuse off;
+    proxy_set_header  Host    nz-pimp-api-localz.herokuapp.com;
+    proxy_set_header  X-Real-IP     $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+
+  location /pimp-jl/v1 {
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    }   
+    rewrite  ^/pimp-jl/v1/(.*)  /$1 break;
+    proxy_pass    https://pimp-jl-prod-platform;
+    proxy_ssl_session_reuse off;
+    proxy_set_header  Host    jl-pimp-api-localz.herokuapp.com;
+    proxy_set_header  X-Real-IP     $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+
+  location /pimp-jl-dev/v1 {
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    }   
+    rewrite  ^/pimp-jl-dev/v1/(.*)  /$1 break;
+    proxy_pass    https://pimp-jl-dev-platform;
+    proxy_ssl_session_reuse off;
+    proxy_set_header  Host    dev-jl-pimp-api-localz.herokuapp.com;
+    proxy_set_header  X-Real-IP     $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+
+  location /homepass-dev/v1 {
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    }   
+    rewrite  ^/homepass-dev/v1/(.*)  /$1 break;
+    proxy_pass    https://dev-homepass-platform;
+    proxy_ssl_session_reuse off;
+    proxy_set_header  Host    dev-api-homepass-com.herokuapp.com;
+    proxy_set_header  X-Real-IP     $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+
+  location /homepass/v1 {
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    }   
+    rewrite  ^/homepass/v1/(.*)  /$1 break;
+    proxy_pass    https://prod-homepass-platform;
+    proxy_ssl_session_reuse off;
+    proxy_set_header  Host    dev-api-homepass-com.herokuapp.com;
+    proxy_set_header  X-Real-IP     $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+}
