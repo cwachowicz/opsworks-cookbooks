@@ -17,6 +17,8 @@ http {
   <% end %>
 
   access_log	<%= node[:nginx][:log_dir] %>/access.log;
+  access_log  <%= node[:nginx][:log_dir] %>/upstream.log upstream;
+  error_log   <%= node[:nginx][:log_dir] %>/error.log;
 
   sendfile on;
   tcp_nopush on;
