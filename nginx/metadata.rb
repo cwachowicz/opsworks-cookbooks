@@ -82,7 +82,3 @@ attribute "nginx/proxy_send_timeout",
   :display_name => "Nginx Proxy Send Timeout",
   :description => "Assigns timeout with the transfer of request to the upstream server.",
   :default => "60"
-  
-attribute "nginx/log_format",
-  :name => "upstream",
-  :format => "'$remote_addr - - [$time_local] "$request" $status ' 'upstream $upstream_response_time request $request_time ' '[for $host via $upstream_addr]';"
