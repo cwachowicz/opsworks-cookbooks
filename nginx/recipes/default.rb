@@ -70,9 +70,3 @@ template "#{node[:nginx][:dir]}/sites-enabled/default" do
     group "root"
     mode 0644
 end
-
-include_recipe "nginx::service"
-
-service "nginx" do
-  action [ :enable, :start ]
-end
