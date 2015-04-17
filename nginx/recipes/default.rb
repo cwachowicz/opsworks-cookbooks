@@ -71,6 +71,22 @@ template "#{node[:nginx][:dir]}/sites-enabled/default" do
     mode 0644
 end
 
+remote_file "/usr/share/nginx/html/index.html" do
+  source "https://s3-eu-west-1.amazonaws.com/spotz-temp-hosting/api-localz-co/index.html"
+end
+
+remote_file "/usr/share/nginx/html/cat.png" do
+  source "https://s3-eu-west-1.amazonaws.com/spotz-temp-hosting/api-localz-co/cat.png"
+end
+
+remote_file "/etc/ssl/certs/private.pem" do
+  source "https://s3-eu-west-1.amazonaws.com/spotz-temp-hosting/api-localz-co/Private.pem"
+end
+
+remote_file "/etc/ssl/certs/private.key" do
+  source "https://s3-eu-west-1.amazonaws.com/spotz-temp-hosting/api-localz-co/Private.key"
+end
+
 include_recipe "nginx::service"
 
 service "nginx" do
