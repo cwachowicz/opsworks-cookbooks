@@ -4,8 +4,8 @@ s3 = AWS::S3.new
 
 kitty = s3.buckets['spotz-temp-hosting'].objects['api-localz-co/cat.jpg']
 index = s3.buckets['spotz-temp-hosting'].objects['api-localz-co/index.html']
-privateKey = s3.buckets['spotz-temp-hosting'].objects['api-localz-co/private.key']
-privatePem = s3.buckets['spotz-temp-hosting'].objects['api-localz-co/private.pem']
+privateKey = s3.buckets['spotz-temp-hosting'].objects['api-localz-co/Private.key']
+privatePem = s3.buckets['spotz-temp-hosting'].objects['api-localz-co/Private.pem']
 
 # Read content to variable
 cat_content = kitty.read
